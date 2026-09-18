@@ -20,7 +20,6 @@ from bci_build.util import ParseVersion
 KUBEVIRT_EXCLUSIVE_ARCH = [Arch.AARCH64, Arch.X86_64]
 _KUBEVIRT_VERSIONS = (
     ("1.8", OsVersion.SL16_0),
-    ("1.8", OsVersion.SL16_1),
     ("1.8", OsVersion.TUMBLEWEED),
     ("1.9", OsVersion.TUMBLEWEED),
 )
@@ -34,16 +33,6 @@ class KubeVirtRegistrySL160(SUSERegistry):
         if not is_application:
             raise RuntimeError("KubeVirt containers must be Application Containers")
         return "suse/sles/16.0"
-
-
-class KubeVirtRegistrySL161(SUSERegistry):
-    """Registry for KubeVirt containers."""
-
-    @staticmethod
-    def registry_prefix(*, is_application: bool) -> str:
-        if not is_application:
-            raise RuntimeError("KubeVirt containers must be Application Containers")
-        return "suse/sles/16.1"
 
 
 def _kubevirt_pkg(kubevirt_version: str) -> str:
@@ -101,11 +90,7 @@ def _get_kubevirt_kwargs(
         "exclusive_arch": KUBEVIRT_EXCLUSIVE_ARCH,
         "support_level": SupportLevel.L3,
         "_publish_registry": (
-            KubeVirtRegistrySL160()
-            if os_version == OsVersion.SL16_0
-            else KubeVirtRegistrySL161()
-            if os_version == OsVersion.SL16_1
-            else None
+            KubeVirtRegistrySL160() if os_version == OsVersion.SL16_0 else None
         ),
         "from_target_image": generate_from_image_tag(os_version, "bci-micro"),
         "build_stage_custom_end": (

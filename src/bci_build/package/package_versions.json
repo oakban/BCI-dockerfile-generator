@@ -11,7 +11,6 @@
     "containerized-data-importer1.65": {
         "latest": {
             "16.0": "1.65.0",
-            "16.1": "1.65.0",
             "Tumbleweed": "1.65.0"
         },
         "version_format": "patch"
@@ -169,7 +168,6 @@
     "kubevirt1.8": {
         "latest": {
             "16.0": "1.8",
-            "16.1": "1.8",
             "Tumbleweed": "1.8"
         },
         "version_format": "minor"

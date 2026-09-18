@@ -12,7 +12,6 @@ from bci_build.package import ApplicationStackContainer
 from bci_build.package.helpers import generate_from_image_tag
 from bci_build.package.helpers import generate_package_version_check
 from bci_build.package.kubevirt import KubeVirtRegistrySL160
-from bci_build.package.kubevirt import KubeVirtRegistrySL161
 from bci_build.package.versions import format_version
 from bci_build.package.versions import get_pkg_version
 from bci_build.replacement import Replacement
@@ -21,7 +20,6 @@ from bci_build.util import ParseVersion
 CDI_EXCLUSIVE_ARCH = [Arch.AARCH64, Arch.X86_64]
 _CDI_VERSIONS = (
     ("1.65", OsVersion.SL16_0),
-    ("1.65", OsVersion.SL16_1),
     ("1.65", OsVersion.TUMBLEWEED),
     ("1.66", OsVersion.TUMBLEWEED),
 )
@@ -84,11 +82,7 @@ def _get_cdi_kwargs(
         "exclusive_arch": CDI_EXCLUSIVE_ARCH,
         "support_level": SupportLevel.L3,
         "_publish_registry": (
-            KubeVirtRegistrySL160()
-            if os_version == OsVersion.SL16_0
-            else KubeVirtRegistrySL161()
-            if os_version == OsVersion.SL16_1
-            else None
+            KubeVirtRegistrySL160() if os_version == OsVersion.SL16_0 else None
         ),
         "from_target_image": generate_from_image_tag(os_version, "bci-micro"),
         "build_stage_custom_end": (f"{DOCKERFILE_RUN} rm -f /etc/blkid.conf\n")
